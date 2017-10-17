@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class Comment {
 
-    private int commentId;
+    private long commentId;
 
     private int articleId;
 
@@ -21,11 +21,11 @@ public class Comment {
 
     private Date updateDate;
 
-    public int getCommentId() {
+    public long getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(int commentId) {
+    public void setCommentId(long commentId) {
         this.commentId = commentId;
     }
 

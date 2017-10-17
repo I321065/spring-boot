@@ -8,11 +8,11 @@ Configuration:
       - name: log.level.console
         value: trace
       - name: log.level.xjj
-        value: trace
+        value: debug
       - name: log.path
-        value: /opt/logs
+        value: ${sys:catalina.home}/logs
       - name: project.name
-        value: my-spring-boot
+        value: spring-boot
 
   Appenders:
     Console:  #输出到控制台

@@ -5,7 +5,6 @@ import com.ironman.www.spring.service.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 
 /**
  * Created by superuser on 9/21/17.
@@ -14,7 +13,7 @@ import javax.inject.Inject;
 @Service
 public class UserService {
 
-    @Inject
+    @Autowired
     private UserDAO userDAO;
 
     public User getUserByName(String userName) {

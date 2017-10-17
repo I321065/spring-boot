@@ -1,6 +1,6 @@
 package com.ironman.www.spring.service.utils;
 
-import com.yc.www.jfinal.service.common.Constants;
+import com.ironman.www.spring.service.common.Constants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;

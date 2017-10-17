@@ -1,6 +1,6 @@
 package com.ironman.www.spring.service.utils;
 
-import com.yc.www.jfinal.service.factory.JedisFactory;
+import com.ironman.www.spring.service.factory.JedisFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import redis.clients.jedis.Jedis;
