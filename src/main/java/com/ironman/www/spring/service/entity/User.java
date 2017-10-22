@@ -5,27 +5,31 @@ import org.apache.ibatis.type.Alias;
 import java.util.Date;
 
 /**
- * Created by superuser on 9/21/17.
+ * Created by Nick on 2017/3/5.
  */
-
 @Alias("User")
 public class User {
 
-    private int userId;
-
+    private long userId;
     private String userName;
-
     private String password;
+    private String salt;
 
     private Date createDate;
-
     private Date updateDate;
 
-    public int getUserId() {
+    public User() {}
+
+    public User(String userName, String passWord) {
+        this.userName = userName;
+        this.password = passWord;
+    }
+
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -43,6 +47,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public Date getCreateDate() {

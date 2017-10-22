@@ -7,6 +7,13 @@ import com.ironman.www.spring.service.entity.User;
  */
 
 public interface UserDAO {
-    User findUserByName(String userName);
+
+    User getUserByName(String userName);
+
+    String getUserNameById(long userId);
+
+    User getUserByIdAndName(Long userId, String userName);
+
+    void saveUser(User user);
 
 }

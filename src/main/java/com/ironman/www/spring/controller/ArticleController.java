@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class ArticleController {
     @Autowired
     CommentService commentService;
 
-    @RequestMapping("/save")
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     public void save() {
         //User user = getAttr("user");//get user from token
         //int userId = user.getUserId();
@@ -68,7 +69,7 @@ public class ArticleController {
 
     }
 
-    @RequestMapping("/list")
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public void list() {
         List<ArticleVO> articleVOs = null;
         String articleUserId = getPara("articleUserId");
@@ -80,8 +81,8 @@ public class ArticleController {
         renderJson(new Result(articleVOs));
     }
 
-    @RequestMapping("/comment")
-    public void comment() {
+    @RequestMapping(value = "/comment", method = RequestMethod.POST)
+    public Comment comment() {
         int articleId = 1;
         int userId = 1;
         String commentDetail = "";
@@ -93,6 +94,7 @@ public class ArticleController {
         comment.setCommentDetail(commentDetail);
         comment.setCommentOverall(commentOverall);
         Comment saveBean = commentService.save(comment);
+        return saveBean;
 
 
 

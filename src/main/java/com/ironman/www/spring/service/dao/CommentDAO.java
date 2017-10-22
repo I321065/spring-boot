@@ -1,6 +1,5 @@
 package com.ironman.www.spring.service.dao;
 
-
 import com.ironman.www.spring.service.entity.Comment;
 
 /**

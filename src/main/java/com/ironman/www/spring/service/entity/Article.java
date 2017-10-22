@@ -1,29 +1,32 @@
 package com.ironman.www.spring.service.entity;
 
+import org.apache.ibatis.type.Alias;
+
 import java.util.Date;
 
 /**
  * Created by I321065 on 9/25/2017.
  */
+@Alias("Article")
 public class Article {
 
-    private int articleId;
+    private long articleId;
 
     private String articleTitle;
 
     private String articleLocation;
 
-    private int articleUserId;
+    private long articleUserId;
 
     private Date createDate;
 
-    private Date UpdateDate;
+    private Date updateDate;
 
-    public int getArticleId() {
+    public long getArticleId() {
         return articleId;
     }
 
-    public void setArticleId(int articleId) {
+    public void setArticleId(long articleId) {
         this.articleId = articleId;
     }
 
@@ -43,11 +46,11 @@ public class Article {
         this.articleLocation = articleLocation;
     }
 
-    public int getArticleUserId() {
+    public long getArticleUserId() {
         return articleUserId;
     }
 
-    public void setArticleUserId(int articleUserId) {
+    public void setArticleUserId(long articleUserId) {
         this.articleUserId = articleUserId;
     }
 
@@ -60,10 +63,10 @@ public class Article {
     }
 
     public Date getUpdateDate() {
-        return UpdateDate;
+        return updateDate;
     }
 
     public void setUpdateDate(Date updateDate) {
-        UpdateDate = updateDate;
+        this.updateDate = updateDate;
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/")
-public class IndexController{
+public class IndexController {
 
     Logger logger = LogManager.getLogger(IndexController.class);
 

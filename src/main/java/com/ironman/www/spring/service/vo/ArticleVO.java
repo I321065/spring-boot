@@ -1,0 +1,47 @@
+package com.ironman.www.spring.service.vo;
+
+/**
+ * Created by superuser on 9/25/17.
+ */
+public class ArticleVO {
+
+    private long articleId;
+
+    private String title;
+
+    private String content;
+
+    private String userName;
+
+    public long getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(long articleId) {
+        this.articleId = articleId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+}

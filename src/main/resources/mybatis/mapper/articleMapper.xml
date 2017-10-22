@@ -3,6 +3,8 @@
 
 <mapper namespace="com.ironman.www.spring.service.dao.ArticleDAO">
  
-
+    <select id="getArticleLocationByArticleId" parameterType="Long" resultType="String">
+        SELECT articleLocation from article where articleId=#{articleId}
+    </select>
 
 </mapper>

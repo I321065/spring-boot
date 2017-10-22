@@ -3,8 +3,20 @@
 
 <mapper namespace="com.ironman.www.spring.service.dao.UserDAO">
  
-    <select id="findUserByName" parameterType="String" resultType="User">
-        SELECT * from user WHERE userName=#{userName}
+    <select id="getUserByName" parameterType="String" resultType="User">
+        SELECT userId, userName, passWord, salt from user WHERE userName=#{userName}
     </select>
+
+    <select id="getUserById" parameterType="Long" resultType="User">
+        SELECT userId, userName from user WHERE userId=#{userId}
+    </select>
+
+    <select id="getUserByIdAndName" parameterType="HashMap" resultType="User">
+        SELECT userId, userName from user WHERE userId=#{userId} AND userName=#{userName}
+    </select>
+
+    <insert id="saveUser" parameterType="User">
+        INSERT INTO user values(#{userName}, #{salt}, #{passWord}, #{createDate}, #{updateDate})
+    </insert>
 
 </mapper>
