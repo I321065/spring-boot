@@ -2,18 +2,20 @@ package com.ironman.www.spring.controller;
 
 import com.ironman.www.spring.service.ArticleService;
 import com.ironman.www.spring.service.CommentService;
+import com.ironman.www.spring.service.common.ResponseResult;
+import com.ironman.www.spring.service.entity.Article;
 import com.ironman.www.spring.service.entity.Comment;
-import org.apache.commons.beanutils.BeanUtils;
+import com.ironman.www.spring.service.vo.ArticleVO;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  * Created by superuser on 9/18/17.
@@ -31,37 +33,27 @@ public class ArticleController {
     CommentService commentService;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public void save() {
+    public ResponseResult save(@RequestParam(value = "title", required = true) String articleTitle,
+                               @RequestParam(value = "content", required = true) String articleContent) {
         //User user = getAttr("user");//get user from token
         //int userId = user.getUserId();
-        int userId = 1;
+        int userId = 1;//get the userId by session/token
 
-        try {
-            ArticleRequestObject articleRequestObject = ParseRequest.getObjectFromRequest(ArticleRequestObject.class, this);
-            String articleTitle = BeanUtils.getProperty(articleRequestObject, "title");
-            String articleContent = BeanUtils.getProperty(articleRequestObject, "content");
-            if(StringUtils.isBlank(articleTitle) || StringUtils.isBlank(articleContent)) {
-                renderJson("title or content can not be null");
-                return;
-            }
+        ResponseResult result = null;
 
-            Article article = articleService.createArticle(articleTitle, articleContent, userId);
-            Result result = null;
-            if(article != null) {
-                result = new Result(article);
-            }else{
-                result = new Result("something wrong happened, please contact administrator");
-            }
-            renderJson(result);
-        } catch (IOException e) {
-            log.error("catch exception", e);
-        } catch (IllegalAccessException e) {
-            log.error("catch exception", e);
-        } catch (InvocationTargetException e) {
-            log.error("catch exception", e);
-        } catch (NoSuchMethodException e) {
-            log.error("catch exception", e);
+        if(StringUtils.isBlank(articleTitle) || StringUtils.isBlank(articleContent)) {
+            log.error("title or content can not be null");
+            return null;
         }
+
+        Article article = articleService.createArticle(articleTitle, articleContent, userId);
+
+        if(article != null) {
+            result = new ResponseResult(article);
+        }else{
+            result = new ResponseResult(null, 1, "something wrong happened, please contact administrator");
+        }
+        return result;
     }
 
     @RequestMapping("/update")
@@ -70,36 +62,37 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public void list() {
+    public ResponseResult list() {
+        ResponseResult result = null;
         List<ArticleVO> articleVOs = null;
-        String articleUserId = getPara("articleUserId");
-        if(!StringUtils.isBlank(articleUserId)) {
-            articleVOs = articleService.listAllArticles(Integer.parseInt(articleUserId));
-        }else {
-            articleVOs = articleService.listAllArticles();
+        articleVOs = articleService.listAllArticles();
+        return new ResponseResult(articleVOs);
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    public ResponseResult list(@RequestParam(value = "articleUserId", required = true, defaultValue = "-1") long articleUserId) {
+        List<ArticleVO> articleVOs = null;
+        if(articleUserId < 0) {
+            return new ResponseResult(null, 1, "the articleUserId is null");
         }
-        renderJson(new Result(articleVOs));
+        articleVOs = articleService.listAllArticles(articleUserId);
+        return new ResponseResult(articleVOs);
     }
 
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
-    public Comment comment() {
-        int articleId = 1;
-        int userId = 1;
-        String commentDetail = "";
-        int commentOverall = 1;
+    public ResponseResult comment(@RequestParam(value = "articleId", required = true) long articleId,
+                                  @RequestParam(value = "commentOverall", required = false, defaultValue = "") String commentDetail,
+                                  @RequestParam(value = "commentOverall", required = true, defaultValue = "1") int commentOverall) {
+
+        long userId = 1;//get it from token
 
         Comment comment = new Comment();
         comment.setArticleId(articleId);
         comment.setCommentUserId(userId);
         comment.setCommentDetail(commentDetail);
         comment.setCommentOverall(commentOverall);
-        Comment saveBean = commentService.save(comment);
-        return saveBean;
-
-
-
+        commentService.saveComment(comment);
+        return new ResponseResult(comment);
     }
-
-
 
 }

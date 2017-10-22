@@ -5,6 +5,8 @@ import com.ironman.www.spring.service.entity.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * Created by superuser on 10/17/17.
  */
@@ -12,10 +14,12 @@ import org.springframework.stereotype.Service;
 public class CommentService {
 
     @Autowired
-    private CommentDAO dao;
+    private CommentDAO commentDAO;
 
-    public Comment save(Comment comment) {
-        return dao.save(comment);
+    public Comment saveComment(Comment comment) {
+        comment.setCreateDate(new Date());
+        comment.setUpdateDate(new Date());
+        return commentDAO.save(comment);
     }
 
 }
