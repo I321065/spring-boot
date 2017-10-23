@@ -3,8 +3,25 @@
 
 <mapper namespace="com.ironman.www.spring.service.dao.ArticleDAO">
  
-    <select id="getArticleLocationByArticleId" parameterType="Long" resultType="String">
+    <select id="getArticleLocationByArticleId" parameterType="long" resultType="String">
         SELECT articleLocation from article where articleId=#{articleId}
     </select>
+
+    <select id="getArticlesByUserId" parameterType="long" resultType="Article">
+        SELECT * from article
+        <where>
+            <if test="_parameter > 0">
+                articleUserId=#{"_parameter}
+            </if>
+        </where>
+    </select>
+
+    <insert id="saveArticle" parameterType="Article">
+        INSERT INTO article(articleTitle, articleLocation, articleUserId, createDate, updateDate) values(#{articleTitle}, #{articleLocation}, #{articleUserId}, #{createDate}, #{updateDate})
+    </insert>
+
+    <delete id="deleteByArticleId" parameterType="long">
+        DELETE FROM article WHERE articleId=#{articleId}
+    </delete>
 
 </mapper>

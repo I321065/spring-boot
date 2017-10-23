@@ -64,7 +64,7 @@ public class UserService {
             log.error("");
             return null;
         }
-        return userDAO.getUserNameById(userId);
+        return userDAO.getUserNameByUserId(userId);
     }
 
     private User getUserByUserIdAndUserName(long userId, String userName) {

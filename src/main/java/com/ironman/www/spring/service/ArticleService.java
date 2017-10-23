@@ -23,13 +23,13 @@ public class ArticleService {
     private static final Logger log = LogManager.getLogger(ArticleService.class);
 
     @Autowired
-    private ArticleDAO articleDao;
+    private ArticleDAO articleDAO;
 
     @Autowired
     UserService userService;
 
-    //private static String rootPath = "/home/superuser/workspace/temp/ironman/articles"; //local
-    private static String rootPath = "/apps/ironman/articles"; //production
+    private static String rootPath = "/home/superuser/workspace/temp/ironman/articles"; //local
+    //private static String rootPath = "/apps/ironman/articles"; //production
 
     public Article createArticle(String title, String content, long userId) {
         if(StringUtils.isBlank(title) || StringUtils.isBlank(content)) {
@@ -42,7 +42,7 @@ public class ArticleService {
         article.setArticleUserId(userId);
         article.setCreateDate(new Date());
         article.setUpdateDate(new Date());
-        articleDao.saveArticle(article);
+        articleDAO.saveArticle(article);
         return article;
     }
 
@@ -104,7 +104,7 @@ public class ArticleService {
         if(articleUserId > 0) {
             sql.append(" where articleUserId = " + articleUserId);
         }*/
-        List<Article> articles = articleDao.getArticlesByUserId(articleUserId);
+        List<Article> articles = articleDAO.getArticlesByUserId(articleUserId);
         if(articles == null || articles.isEmpty()) {
             log.error("");
             return null;
@@ -181,7 +181,7 @@ public class ArticleService {
         }
 
         //delete from datbbase
-        articleDao.deleteById(articleId);
+        articleDAO.deleteByArticleId(articleId);
 
         //delete from disk
         boolean isDeleteFromDisk = deleteArticleFromDisk(location);
@@ -192,7 +192,7 @@ public class ArticleService {
     private String getArticleLocationByArticleId(long articleId) {
         /*String sql = "select articleLocation from article where articleId=" + articleId;
         Article article = articleDao.findFirst(sql);*/
-        return articleDao.getArticleLocationByArticleId(articleId);
+        return articleDAO.getArticleLocationByArticleId(articleId);
     }
 
     private boolean deleteArticleFromDisk(String filePath) {

@@ -8,5 +8,5 @@ import com.ironman.www.spring.service.entity.Comment;
 
 public interface CommentDAO {
 
-    Comment save(Comment comment);
+    void saveComment(Comment comment);
 }

@@ -4,7 +4,7 @@
 <mapper namespace="com.ironman.www.spring.service.dao.CommentDAO">
  
     <insert id="saveComment" parameterType="Comment">
-        INSERT INTO comment VALUES(#{articleId}, #{commentUserId}, #{commentDetail}, #{commentOverall}, #{createDate}, #{updateDate})
+        INSERT INTO comment(articleId, commentUserId, commentDetail, commentOverall, createDate, updateDate) VALUES(#{articleId}, #{commentUserId}, #{commentDetail}, #{commentOverall}, #{createDate}, #{updateDate})
     </insert>
 
 </mapper>

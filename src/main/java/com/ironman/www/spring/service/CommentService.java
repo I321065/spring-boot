@@ -19,7 +19,8 @@ public class CommentService {
     public Comment saveComment(Comment comment) {
         comment.setCreateDate(new Date());
         comment.setUpdateDate(new Date());
-        return commentDAO.save(comment);
+        commentDAO.saveComment(comment);
+        return comment;
     }
 
 }

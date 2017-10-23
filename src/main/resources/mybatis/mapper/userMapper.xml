@@ -7,16 +7,16 @@
         SELECT userId, userName, passWord, salt from user WHERE userName=#{userName}
     </select>
 
-    <select id="getUserById" parameterType="Long" resultType="User">
-        SELECT userId, userName from user WHERE userId=#{userId}
+    <select id="getUserNameByUserId" parameterType="long" resultType="String">
+        SELECT userName from user WHERE userId=#{userId}
     </select>
 
-    <select id="getUserByIdAndName" parameterType="HashMap" resultType="User">
+    <select id="getUserByIdAndName" parameterType="Map" resultType="User">
         SELECT userId, userName from user WHERE userId=#{userId} AND userName=#{userName}
     </select>
 
     <insert id="saveUser" parameterType="User">
-        INSERT INTO user values(#{userName}, #{salt}, #{passWord}, #{createDate}, #{updateDate})
+        INSERT INTO user(userName, salt, passWord, createDate, updateDate) values(#{userName}, #{salt}, #{passWord}, #{createDate}, #{updateDate})
     </insert>
 
 </mapper>

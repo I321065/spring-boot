@@ -13,9 +13,9 @@ public interface ArticleDAO {
 
     void saveArticle(Article article);
 
-    List<Article> getArticlesByUserId(long userId);
+    List<Article> getArticlesByUserId(long articleUserId);
 
-    void deleteById(long articleId);
+    void deleteByArticleId(long articleId);
 
     String getArticleLocationByArticleId(long articleId);
 }
