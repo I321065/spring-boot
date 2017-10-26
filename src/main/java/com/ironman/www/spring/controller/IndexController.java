@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/spring/ironman")
 public class IndexController {
 
-    Logger logger = LogManager.getLogger(IndexController.class);
+    private static final Logger log = LogManager.getLogger(IndexController.class);
 
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)

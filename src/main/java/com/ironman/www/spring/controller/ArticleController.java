@@ -23,7 +23,7 @@ import java.util.Map;
 @RequestMapping("/spring/ironman/article")
 public class ArticleController {
 
-    Logger log = LogManager.getLogger(ArticleController.class);
+    private static final Logger log = LogManager.getLogger(ArticleController.class);
 
     @Autowired
     ArticleService articleService;

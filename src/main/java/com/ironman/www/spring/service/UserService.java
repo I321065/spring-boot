@@ -29,12 +29,9 @@ public class UserService {
     private UserDAO userDAO;
 
 
-    public User getLoginUser(String userName, String password, String privateKey) {
+    public User getLoginUser(String username, String password, String privateKey) {
         try {
-            /*String sqlString = "select userId, userName, password, salt from user where userName = '" + userName + "'";
-            log.info("get the user String=" + sqlString);
-            User user = User.dao.findFirst(sqlString);*/
-            User user = userDAO.getUserByName(userName);
+            User user = userDAO.getUserByName(username);
             log.info("user is null by DB query=" + user);
             if(user == null) {
                 log.info("user is null by DB query");
@@ -42,9 +39,9 @@ public class UserService {
             }
             String salt = user.getSalt();
             String pwdDB = user.getPassword();
-            String passWord = MD5Util.generate(password, salt);
-            log.info("get the user password" + passWord);
-            if(passWord.equals(pwdDB)) {
+            String pwd = MD5Util.generate(password, salt);
+            log.debug("get the user password" + pwd);
+            if(password.equals(pwdDB)) {
                 return user;
             }else {
                 log.info("password is wrong");
@@ -55,8 +52,8 @@ public class UserService {
         return null;
     }
 
-    public User getUserByName(String userName) {
-        return userDAO.getUserByName(userName);
+    public User getUserByName(String username) {
+        return userDAO.getUserByName(username);
     }
 
     public String getUserNameById(long userId) {
@@ -67,13 +64,13 @@ public class UserService {
         return userDAO.getUserNameByUserId(userId);
     }
 
-    private User getUserByUserIdAndUserName(long userId, String userName) {
-        return userDAO.getUserByIdAndName(userId, userName);
+    private User getUserByUserIdAndUsername(long userId, String username) {
+        return userDAO.getUserByIdAndName(userId, username);
     }
 
     public void saveUser(User user) {
         User userDB = new User();
-        userDB.setUserName(user.getUserName());
+        userDB.setUsername(user.getUsername());
         String salt = MD5Util.generateSalt();
         userDB.setSalt(salt);
         userDB.setPassword(MD5Util.generate(user.getPassword(), salt));
@@ -107,7 +104,7 @@ public class UserService {
     private static String generateUserSubject(User user){
         JSONObject jo = new JSONObject();
         jo.put("userId", user.getUserId());
-        jo.put("userName", user.getUserName());
+        jo.put("username", user.getUsername());
         return jo.toJSONString();
     }
 
@@ -124,11 +121,10 @@ public class UserService {
             String userJson = claims.getSubject();
             JSONObject obj = (JSONObject) JSONObject.parse(userJson);
             long userId = obj.getLongValue("userId");
-            String userName = obj.getString("userName");
-            log.info("parse User Token userId=" + userId + " userName=" + userName);
-            user = getUserByUserIdAndUserName(userId, userName);
+            String username = obj.getString("username");
+            log.info("parse User Token userId=" + userId + " username=" + username);
+            user = getUserByUserIdAndUsername(userId, username);
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("parse User token failed", e);
         }
         return user;

@@ -8,11 +8,11 @@ import com.ironman.www.spring.service.entity.User;
 
 public interface UserDAO {
 
-    User getUserByName(String userName);
+    User getUserByName(String username);
 
     String getUserNameByUserId(long userId);
 
-    User getUserByIdAndName(Long userId, String userName);
+    User getUserByIdAndName(Long userId, String username);
 
     void saveUser(User user);
 

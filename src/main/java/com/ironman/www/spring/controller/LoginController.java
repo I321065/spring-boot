@@ -6,19 +6,20 @@ import com.ironman.www.spring.service.entity.User;
 import com.ironman.www.spring.service.utils.Base64Util;
 import com.ironman.www.spring.service.utils.JedisUtil;
 import com.ironman.www.spring.service.utils.RSAUtil;
+import com.ironman.www.spring.service.vo.PublicKeyVO;
 import com.ironman.www.spring.service.vo.UserVO;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.ironman.www.spring.service.common.Constants.RESPONSE_ERROR;
 
 /**
  * Created by superuser on 9/21/17.
@@ -28,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping("/spring/ironman")
 public class LoginController {
 
-    Logger log = LogManager.getLogger(LoginController.class);
+    private static final Logger log = LogManager.getLogger(LoginController.class);
 
     @Autowired
     private UserService userService;
@@ -50,37 +51,61 @@ public class LoginController {
             result = new ResponseResult(publicKey, 0, null);
         } catch (Exception e) {
             log.error("catch exception", e);
-            result = new ResponseResult(null, 1, "failed to create public key");
+            result = new ResponseResult(null, 1, RESPONSE_ERROR);
         }
         return result;
     }
 
+    @RequestMapping(value = "register", method = RequestMethod.POST)
+    public ResponseResult register(@RequestBody(required = true) PublicKeyVO vo) {
+
+        String publicKey = vo.getPublicKey();
+        String username = vo.getUsername();
+        String password = vo.getPassword();
+        if(StringUtils.isBlank(publicKey) || StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
+            String mess = "username or password is null";
+            log.error(mess);
+            return new ResponseResult(null, 1, mess);
+        }
+        User user = userService.getUserByName(username);
+        if(user != null) {
+            return new ResponseResult(null, 1, "the user name has been registered, please use another one");
+        }
+        user = new User(username, password);
+        userService.saveUser(user);
+        return new ResponseResult(user);
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseResult login(@RequestParam(value = "userName", required = true) String userName,
-                        @RequestParam(value = "passWord", required = true) String passWord,
-                        @RequestParam(value = "publicKey", required = true) String publicKey) {
+    public ResponseResult login(@RequestBody(required = true) PublicKeyVO vo) {
 
         log.info("access the login controller");
         ResponseResult result = null;
+        String publicKey = vo.getPublicKey();
+        String username = vo.getUsername();
+        String password = vo.getPassword();
+        if(StringUtils.isBlank(publicKey) || StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
+            log.error("some message is null, publicKey=" + publicKey + ", username=" + username + ", password=" + password);
+            return new ResponseResult(null, 1, "some argument is null");
+        }
 
         String privateKey = JedisUtil.getStringValue(publicKey);
         byte[] bytes = null;
         try {
-            bytes = Base64Util.decodeString(passWord);
+            bytes = Base64Util.decodeString(password);
             String pwd = new String(RSAUtil.decryptByPrivateKey(bytes, privateKey));
-            User user = userService.getLoginUser(userName, pwd, privateKey);
+            User user = userService.getLoginUser(username, pwd, privateKey);
             if(user == null) {
                 return new ResponseResult(null, 1, "the password is not right");
             }
             UserVO uVO = new UserVO();
-            uVO.setUserName(user.getUserName());
+            uVO.setUsername(user.getUsername());
             uVO.setToken(userService.generateUserToken(user));
             return new ResponseResult(uVO);
         } catch (Exception e) {
             log.error("catch exception when get the content from private key", e);
         }
-        return new ResponseResult(null, 1, "login failed, please contact administrator");
+        return new ResponseResult(null, 1, RESPONSE_ERROR);
     }
 
 }
