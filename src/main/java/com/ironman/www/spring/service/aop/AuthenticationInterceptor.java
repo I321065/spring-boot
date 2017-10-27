@@ -12,12 +12,6 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Order(-99)
 @Component
-public class PermissionCheckInterceptor {
+public class AuthenticationInterceptor {
 
-    @Before("@annotation(permissionCheck)")
-    public void beforeExcute(JoinPoint point) {
-
-    }
-
-    @Before()
 }

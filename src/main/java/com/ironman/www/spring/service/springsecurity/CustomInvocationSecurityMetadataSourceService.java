@@ -1,4 +1,4 @@
-package com.ironman.www.spring.service.security;
+package com.ironman.www.spring.service.springsecurity;
 
 import com.ironman.www.spring.service.dao.PermissionDAO;
 import com.ironman.www.spring.service.entity.Permission;

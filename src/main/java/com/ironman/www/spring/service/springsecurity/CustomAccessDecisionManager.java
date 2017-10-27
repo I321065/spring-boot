@@ -1,4 +1,4 @@
-package com.ironman.www.spring.service.security;
+package com.ironman.www.spring.service.springsecurity;
 
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;

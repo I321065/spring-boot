@@ -1,6 +1,5 @@
-package com.ironman.www.spring.service.security;
+package com.ironman.www.spring.service.springsecurity;
 
-import com.ironman.www.spring.service.UserService;
 import com.ironman.www.spring.service.dao.UserDAO;
 import com.ironman.www.spring.service.entity.Role;
 import com.ironman.www.spring.service.entity.User;
